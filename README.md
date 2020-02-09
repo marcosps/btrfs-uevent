@@ -107,3 +107,42 @@ Contains the device size before the resize
 
 ### BTRFS_NEW_SIZE
 Contains the device size after the resize
+
+# Checksum mismatch detected
+
+## Where?
+* io_ctl_check_crc
+* check_compressed_csum
+* end_compressed_bio_read
+* \_\_readpage_endio_check (call sites?)
+* btrfs_print_data_csum_error (?)
+* end_bio_extent_readpage
+  * bio_readpage_error
+    * Check if btrfs_check_repairable fails (?)
+
+## What?
+
+### BTRFS_FSID
+The metadata_uuid of the filesystem when the csum misatch happended
+
+### BTRFS_DEVID
+The device ID where the csum mistmatch happended
+
+### BTRFS_NUM_COPIES
+Number of available copies of the data
+
+# Checksum mismatch detected, and repaired
+
+## Where?
+* repair_io_failure (?)
+
+# What?
+
+### BTRFS_FSID
+The metadata_uuid of the filesystem when the csum misatch happended
+
+### BTRFS_DEVID
+The device ID where the csum mismatch was repaired
+
+### BTRFS_SECTOR_REPAIRED
+The sector number that was fixed
