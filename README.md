@@ -164,12 +164,12 @@ The sector number that was fixed
 ### BTRFS_FSID
 UUID of filesystem which got modified
 
-### BTRFS_DEVICE_{ADDED,UPDATED,DELETED}_PATH
-Path to the device being added/updated/deleted
+### BTRFS_DEVICE_{ADDED,DELETED,REPLACED}_PATH
+Path to the device being added/deleted/replaced
 
-### BTRFS_DEVICE_UPDATED_PATH_OLD
-Path to device being replaced (evaluate possibility/easiness of getting this info)
+### BTRFS_DEVICE_REPLACED_PATH_OLD
+Path to device being replaced
 
-### BTRFS_DEVICE_UPDATED_PATH_NEW
-Path to device replacing BTRFS_DEVICE_UPDATE_PATH_OLD
+### BTRFS_DEVICE_REPLACED_PATH_NEW
+Path to device replacing BTRFS_DEVICE_REPLACE_PATH_OLD
 
