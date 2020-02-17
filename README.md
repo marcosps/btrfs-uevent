@@ -123,10 +123,10 @@ Contains the device size after the resize
 ## What?
 
 ### BTRFS_FSID
-The metadata_uuid of the filesystem when the csum misatch happended
+The metadata_uuid of the filesystem when the csum mismatch happened
 
 ### BTRFS_DEVID
-The device ID where the csum mistmatch happended
+The device ID where the csum mistmatch happened
 
 ### BTRFS_NUM_COPIES
 Number of available copies of the data
@@ -139,10 +139,37 @@ Number of available copies of the data
 # What?
 
 ### BTRFS_FSID
-The metadata_uuid of the filesystem when the csum misatch happended
+The metadata_uuid of the filesystem when the csum mismatch happened
 
 ### BTRFS_DEVID
 The device ID where the csum mismatch was repaired
 
 ### BTRFS_SECTOR_REPAIRED
 The sector number that was fixed
+
+# Device added/deleted/replaced
+
+## Where
+
+* btrfs_ioctl_add_dev()
+* btrfs_ioctl_rm_dev_v2()
+* btrfs_ioctl_rm_dev()
+* btrfs_dev_replace_finishing() (watch for scrub here too)
+* btrfs_dev_replace_cancel()
+* btrfs_dev_replace_start()
+* ...
+
+## What?
+
+### BTRFS_FSID
+UUID of filesystem which got modified
+
+### BTRFS_DEVICE_{ADDED,UPDATED,DELETED}_PATH
+Path to the device being added/updated/deleted
+
+### BTRFS_DEVICE_UPDATED_PATH_OLD
+Path to device being replaced (evaluate possibility/easiness of getting this info)
+
+### BTRFS_DEVICE_UPDATED_PATH_NEW
+Path to device replacing BTRFS_DEVICE_UPDATE_PATH_OLD
+
