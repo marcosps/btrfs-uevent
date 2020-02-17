@@ -1,3 +1,8 @@
+Use 80-local.rules for simple testing/demonstration.
+
+`# cp 80-local.rules /etc/udev/rules.d`
+`# udevadm control --reload`
+
 # Subvolume create/delete/clean
 
 ## Where?
@@ -10,10 +15,10 @@
 ### BTRFS_FSID
 The metadata_uuid of the filesystem where the subvolume was created/deleted
 
-### BTRFS_OBJECTID
+### BTRFS_SUBVOLUME_OBJECTID
 The subvolume objectid that is being created/deletes
 
-### BTRFS_PARENT_OBJECTID
+### BTRFS_SUBVOLUME_PARENT_OBJECTID
 The objectid of the parent node of the subvolume being created/deleted
 
 ### BTRFS_SUBVOLUME_NAME
@@ -147,7 +152,7 @@ The device ID where the csum mismatch was repaired
 ### BTRFS_SECTOR_REPAIRED
 The sector number that was fixed
 
-# Device added/deleted/replaced
+# Device added/deleted/replace
 
 ## Where
 
@@ -164,12 +169,21 @@ The sector number that was fixed
 ### BTRFS_FSID
 UUID of filesystem which got modified
 
-### BTRFS_DEVICE_{ADDED,DELETED,REPLACED}_PATH
+### BTRFS_DEVICE_{ADDED,DELETED,REPLACE}_PATH
 Path to the device being added/deleted/replaced
 
-### BTRFS_DEVICE_REPLACED_PATH_OLD
+### BTRFS_DEVICE_REPLACE_PATH_OLD
 Path to device being replaced
 
-### BTRFS_DEVICE_REPLACED_PATH_NEW
+### BTRFS_DEVICE_REPLACE_PATH_NEW
 Path to device replacing BTRFS_DEVICE_REPLACE_PATH_OLD
 
+### BTRFS_DEVICE_REPLACE_STATE
+Current state of the replace command. Possible values are: started, canceled,
+suspended, finished, and unknown.
+
+### BTRFS_DEVICE_REPLACE_SRC_DEVID
+devid of the device being replaced.
+
+### BTRFS_DEVICE_REPLACE_PROGRESS
+Progress (INT) of the replace operation.

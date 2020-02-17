@@ -1,0 +1,17 @@
+SUBSYSTEM!="block", GOTO="btrfs_end"
+ACTION!="add|change", GOTO="btrfs_end"
+ENV{ID_FS_TYPE}!="btrfs", GOTO="btrfs_end"
+
+# subvolume create/delete
+ENV{BTRFS_SUBVOLUME_CREATE}=="1", RUN+="/usr/local/bin/trigger.sh SUBVOLUME ADDED '%E{BTRFS_DSUBVOLUME_NAME}' (objectid: '%E{BTRFS_SUBVOLUME_OBJECTID}', parent_objectid: '%E{BTRFS_SUBVOLUME_PARENT_OBJECTID}') to '%E{BTRFS_FSID}'"
+
+ENV{BTRFS_SUBVOLUME_DELETE}=="1", RUN+="/usr/local/bin/trigger.sh SUBVOLUME DELETED '%E{BTRFS_DSUBVOLUME_NAME}' (objectid: '%E{BTRFS_SUBVOLUME_OBJECTID}', parent_objectid: '%E{BTRFS_SUBVOLUME_PARENT_OBJECTID}') from '%E{BTRFS_FSID}'"
+
+# device add/delete/replace
+ENV{BTRFS_DEVICE_ADDED}=="1", RUN+="/usr/local/bin/trigger.sh ADDED '%E{BTRFS_DEVICE_ADDED_PATH}' to '%E{BTRFS_FSID}'"
+
+ENV{BTRFS_DEVICE_DELETED}=="1", RUN+="/usr/local/bin/trigger.sh DELETED: '%E{BTRFS_DEVICE_DELETED_PATH}' from '%E{BTRFS_FSID}'"
+
+ENV{BTRFS_DEVICE_REPLACE}=="1", RUN+="/usr/local/bin/trigger.sh REPLACE: replacing '%E{BTRFS_DEVICE_REPLACE_PATH_OLD}' (devid: '%E{BTRFS_DEVICE_REPLACE_SRC_DEVID}') with '%E{BTRFS_DEVICE_REPLACE_PATH_NEW}' in '%E{BTRFS_FSID}' with progress '%E{BTRFS_DEVICE_REPLACE_PROGRESS}"
+
+LABEL="btrfs_end"
