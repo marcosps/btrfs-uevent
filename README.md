@@ -1,7 +1,12 @@
 Use 80-local.rules for simple testing/demonstration.
 
-`# cp 80-local.rules /etc/udev/rules.d`
+`# cp 80-local.rules /etc/udev/rules.d`  
 `# udevadm control --reload`
+
+# TODO
+
+BTRFS_FSID should probably be generic.
+
 
 # Subvolume create/delete/clean
 
@@ -116,25 +121,41 @@ Contains the device size after the resize
 # Checksum mismatch detected
 
 ## Where?
-* io_ctl_check_crc
+* io_ctl_check_crc -- need further checking if we can/should send an uevent from here
 * check_compressed_csum
-* end_compressed_bio_read
+* end_compressed_bio_read -- check_compressed_csum() is called here, and we can't emit an incomplete uevent for the assumed case of a failed IO in the cb
 * \_\_readpage_endio_check (call sites?)
-* btrfs_print_data_csum_error (?)
-* end_bio_extent_readpage
+* btrfs_print_data_csum_error (?) -- shouldn't send uevent from here
+* end_bio_extent_readpage -- not sure csum is checked here and the below functions
   * bio_readpage_error
     * Check if btrfs_check_repairable fails (?)
 
 ## What?
 
+Note we identify as "CSUM" to keep it short, but it's only for mismatch cases.
+
 ### BTRFS_FSID
 The metadata_uuid of the filesystem when the csum mismatch happened
 
-### BTRFS_DEVID
-The device ID where the csum mistmatch happened
+### BTRFS_CSUM_EXPECTED_CSUM
+Expected checksum value (as the one stored in btree).
 
-### BTRFS_NUM_COPIES
+### BTRFS_CSUM_COMPUTED_CSUM
+Actual checksum value computed.
+
+### BTRFS_CSUM_ROOT_OBJID
+Root objectid where the checksum mismatch happened
+
+### BTRFS_CSUM_INODE
+inode with mismatched checksum
+
+### BTRFS_CSUM_OFFSET
+Logical start.
+
+### BTRFS_CSUM_MIRROR_NUM
 Number of available copies of the data
+
+XXX: Should we report "where" does the csum fail? e.g. compressed bio, free-space-cache, etc
 
 # Checksum mismatch detected, and repaired
 
